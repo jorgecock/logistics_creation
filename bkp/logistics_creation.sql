@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-11-2021 a las 21:04:34
+-- Tiempo de generación: 28-11-2021 a las 23:14:17
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.0.13
 
@@ -40,6 +40,31 @@ CREATE TABLE IF NOT EXISTS `puestos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE IF NOT EXISTS `rol` (
+  `idrol` int(11) NOT NULL AUTO_INCREMENT,
+  `rol` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`idrol`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`idrol`, `rol`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Admin', 1, NULL, NULL, NULL),
+(2, 'Supervisor', 1, NULL, NULL, NULL),
+(3, 'Vigilante', 1, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipo_de_estado`
 --
 
@@ -49,17 +74,13 @@ CREATE TABLE IF NOT EXISTS `tipo_de_estado` (
   PRIMARY KEY (`Id_Estado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `tipo_de_usuario`
+-- Volcado de datos para la tabla `tipo_de_estado`
 --
 
-CREATE TABLE IF NOT EXISTS `tipo_de_usuario` (
-  `Id_Tipo` int(10) NOT NULL,
-  `Tipo_de_Usuario` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`Id_Tipo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `tipo_de_estado` (`Id_Estado`, `Tipo_de_Estado`) VALUES
+(1, 'Activo'),
+(2, 'En vacaciones');
 
 -- --------------------------------------------------------
 
@@ -91,17 +112,21 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `Fecha_Ingreso` date DEFAULT NULL,
   `Id_Tipo` int(10) DEFAULT NULL,
   `Id_Estado` int(10) DEFAULT NULL,
+  `rol` int(11) NOT NULL DEFAULT 3,
   PRIMARY KEY (`CC`),
   KEY `Id_Tipo` (`Id_Tipo`),
-  KEY `Id_Estado` (`Id_Estado`)
+  KEY `Id_Estado` (`Id_Estado`),
+  KEY `usuario_ibfk_3` (`rol`)
 ) ENGINE=InnoDB AUTO_INCREMENT=78947284 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`CC`, `Nombres`, `Apellidos`, `Direccion`, `Telefono`, `Email`, `Contrasena`, `Fecha_Ingreso`, `Id_Tipo`, `Id_Estado`) VALUES
-(78947283, 'Rubiela', 'Castano', '', '', 'rubiela@rubiela.com', '1234', NULL, NULL, NULL);
+INSERT INTO `usuario` (`CC`, `Nombres`, `Apellidos`, `Direccion`, `Telefono`, `Email`, `Contrasena`, `Fecha_Ingreso`, `Id_Tipo`, `Id_Estado`, `rol`) VALUES
+(546465, 'Maria Alejandra', 'Londoño', '', '', 'alejandra@alejandra.com', '4321', NULL, NULL, 1, 3),
+(4756654, 'Jorge', 'Cock', '', '', 'jorge@jorge.com', '12345', NULL, NULL, 1, 2),
+(78947283, 'Rubiela', 'Castano', '', '', 'rubiela@rubiela.com', '1234', NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -127,8 +152,8 @@ CREATE TABLE IF NOT EXISTS `usuario_puesto_turno` (
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`Id_Tipo`) REFERENCES `tipo_de_usuario` (`Id_Tipo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`Id_Estado`) REFERENCES `tipo_de_estado` (`Id_Estado`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`Id_Estado`) REFERENCES `tipo_de_estado` (`Id_Estado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`rol`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuario_puesto_turno`
