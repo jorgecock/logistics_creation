@@ -27,6 +27,7 @@
 					$_SESSION['nombres']=$data['nombres'];
 					$_SESSION['apellidos']=$data['apellidos'];
 					$_SESSION['email']=$data['Email'];
+					$_SESSION['rol']=$data['rol'];
 					header('location: main/');
 				} else {
 					$alert = 'El usuario o la clave son incorrectas';
