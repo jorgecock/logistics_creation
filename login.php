@@ -56,6 +56,7 @@
 		
 			<div class="alert"><?php echo isset($alert)? $alert : ''; ?></div>
 			<input type="submit" value="INGRESAR">
+			<a href="index.php">Regresar</a>
 		</form>
 	</div>
 
